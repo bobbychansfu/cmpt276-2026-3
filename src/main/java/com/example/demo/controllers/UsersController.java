@@ -11,21 +11,23 @@ import com.example.demo.models.User;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.demo.models.UserRepository;
+
 @Controller
 public class UsersController {
     private List<User> users = new ArrayList<>();
-    private static int nextUid = 4; // Starting UID for new users
+    // private static int nextUid = 4; // Starting UID for new users
+    private final UserRepository userRepository;
 
-    public UsersController() {
-        this.users.add(new User(1, "John Doe", "john.doe@example.com", "password123"));
-        this.users.add(new User(2, "Jane Smith", "jane.smith@example.com", "password456"));
-        this.users.add(new User(3, "Bob Johnson", "bob.johnson@example.com", "password789"));
+    public UsersController(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     // methods...
 
     @GetMapping("/users/show")
     public String showUsers(Model model) {
+        users = userRepository.findAll();
         model.addAttribute("users", users);
         return "users/showall";
     }
@@ -33,11 +35,12 @@ public class UsersController {
     @PostMapping("/users/add")
     public String addUser(@RequestParam String name, @RequestParam String email, @RequestParam String password) {
         User newUser = new User();
-        newUser.setUid(nextUid++);
+        // newUser.setUid(nextUid++);
         newUser.setName(name);
         newUser.setEmail(email);
         newUser.setPassword(password);
         users.add(newUser);
+        userRepository.save(newUser);
 
         return "redirect:/users/show";
     }
