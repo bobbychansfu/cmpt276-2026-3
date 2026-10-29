@@ -13,6 +13,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -49,7 +51,8 @@ public class UsersControllerTest {
         User savedUser = userCaptor.getValue();
         org.junit.jupiter.api.Assertions.assertEquals("Alice", savedUser.getName());
         org.junit.jupiter.api.Assertions.assertEquals("alice@example.com", savedUser.getEmail());
-        org.junit.jupiter.api.Assertions.assertEquals("secret", savedUser.getPassword()); // Demo app stores password as-is (no hashing yet)
+        org.junit.jupiter.api.Assertions.assertNotEquals("secret", savedUser.getPassword()); // password is hashed, not stored as-is
+        org.junit.jupiter.api.Assertions.assertTrue(new BCryptPasswordEncoder().matches("secret", savedUser.getPassword()));
     }
 
     @Test
@@ -65,5 +68,65 @@ public class UsersControllerTest {
                 .andExpect(model().attribute("users", users));
 
         verify(usersRepository).findAll();
+    }
+
+    @Test
+    void testLoginSuccess() throws Exception {
+        String hashedPassword = new BCryptPasswordEncoder().encode("secret");
+        User user = new User(1, "Alice", "alice@example.com", hashedPassword);
+        when(usersRepository.findByName("Alice")).thenReturn(List.of(user));
+
+        mockMvc.perform(post("/login")
+                .param("name", "Alice")
+                .param("password", "secret"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("users/protected"))
+                .andExpect(model().attribute("user", user))
+                .andExpect(request().sessionAttribute("session_user", user));
+    }
+
+    @Test
+    void testLoginWrongPassword() throws Exception {
+        String hashedPassword = new BCryptPasswordEncoder().encode("secret");
+        User user = new User(1, "Alice", "alice@example.com", hashedPassword);
+        when(usersRepository.findByName("Alice")).thenReturn(List.of(user));
+
+        mockMvc.perform(post("/login")
+                .param("name", "Alice")
+                .param("password", "wrong"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("users/login"))
+                .andExpect(request().sessionAttributeDoesNotExist("session_user"));
+    }
+
+    @Test
+    void testLoginUnknownUser() throws Exception {
+        when(usersRepository.findByName("Bob")).thenReturn(List.of());
+
+        mockMvc.perform(post("/login")
+                .param("name", "Bob")
+                .param("password", "secret"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("users/login"))
+                .andExpect(request().sessionAttributeDoesNotExist("session_user"));
+    }
+
+    @Test
+    void testGetLoginWhenLoggedIn() throws Exception {
+        User user = new User(1, "Alice", "alice@example.com", "hashed");
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("session_user", user);
+
+        mockMvc.perform(get("/login").session(session))
+                .andExpect(status().isOk())
+                .andExpect(view().name("users/protected"))
+                .andExpect(model().attribute("user", user));
+    }
+
+    @Test
+    void testGetLoginWhenLoggedOut() throws Exception {
+        mockMvc.perform(get("/login"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("users/login"));
     }
 }

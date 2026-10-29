@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Protected Resource</title>
+  <desc id="desc">A cute happy cartoon face hugging a padlock.</desc>
+
+  <!-- Face -->
+  <circle cx="512" cy="430" r="315" fill="#FFD54A" stroke="#5B4528" stroke-width="28"/>
+
+  <!-- Soft cheek highlights -->
+  <ellipse cx="300" cy="510" rx="65" ry="34" fill="#F7A9A9" opacity=".62"/>
+  <ellipse cx="724" cy="510" rx="65" ry="34" fill="#F7A9A9" opacity=".62"/>
+
+  <!-- Eyes -->
+  <path d="M300 385 Q355 330 410 385" fill="none" stroke="#5B4528" stroke-width="30" stroke-linecap="round"/>
+  <path d="M614 385 Q669 330 724 385" fill="none" stroke="#5B4528" stroke-width="30" stroke-linecap="round"/>
+
+  <!-- Happy mouth -->
+  <path d="M365 485 Q512 650 659 485 Q640 680 512 700 Q384 680 365 485Z"
+        fill="#70452F" stroke="#5B4528" stroke-width="20" stroke-linejoin="round"/>
+  <path d="M428 625 Q512 570 596 625 Q565 670 512 676 Q459 670 428 625Z" fill="#F47F83"/>
+
+  <!-- Lock shackle -->
+  <path d="M423 683 V632 C423 510 601 510 601 632 V683"
+        fill="none" stroke="#536879" stroke-width="62" stroke-linecap="round"/>
+  <path d="M423 683 V632 C423 510 601 510 601 632 V683"
+        fill="none" stroke="#AFC5D2" stroke-width="28" stroke-linecap="round"/>
+
+  <!-- Lock body -->
+  <rect x="342" y="662" width="340" height="265" rx="58"
+        fill="#65BCE8" stroke="#425A68" stroke-width="26"/>
+  <rect x="370" y="690" width="284" height="54" rx="26" fill="#8ED6F5" opacity=".72"/>
+
+  <!-- Keyhole -->
+  <circle cx="512" cy="785" r="37" fill="#425A68"/>
+  <path d="M488 810 L469 873 H555 L536 810Z" fill="#425A68" stroke="#425A68" stroke-width="10" stroke-linejoin="round"/>
+
+  <!-- Arms hugging the lock -->
+  <path d="M232 614
+           C180 660 186 758 257 811
+           C307 848 356 848 411 821"
+        fill="none" stroke="#5B4528" stroke-width="92" stroke-linecap="round"/>
+  <path d="M232 614
+           C180 660 186 758 257 811
+           C307 848 356 848 411 821"
+        fill="none" stroke="#FFD54A" stroke-width="62" stroke-linecap="round"/>
+
+  <path d="M792 614
+           C844 660 838 758 767 811
+           C717 848 668 848 613 821"
+        fill="none" stroke="#5B4528" stroke-width="92" stroke-linecap="round"/>
+  <path d="M792 614
+           C844 660 838 758 767 811
+           C717 848 668 848 613 821"
+        fill="none" stroke="#FFD54A" stroke-width="62" stroke-linecap="round"/>
+
+  <!-- Little hands -->
+  <ellipse cx="397" cy="821" rx="54" ry="45" transform="rotate(-18 397 821)"
+           fill="#FFD54A" stroke="#5B4528" stroke-width="20"/>
+  <ellipse cx="627" cy="821" rx="54" ry="45" transform="rotate(18 627 821)"
+           fill="#FFD54A" stroke="#5B4528" stroke-width="20"/>
+
+  <!-- Lock sparkle -->
+  <path d="M632 725 L644 750 L669 762 L644 774 L632 799 L620 774 L595 762 L620 750Z"
+        fill="#FFFFFF" opacity=".85"/>
+</svg>
